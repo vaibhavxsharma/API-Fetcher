@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌈 Infinite API Fetcher</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Vibrant Color Palette */
+        :root {
+            --rainbow-1: #FF5E5E;
+            --rainbow-2: #FF9E5E;
+            --rainbow-3: #FFDF5E;
+            --rainbow-4: #5EFF6B;
+            --rainbow-5: #5ECBFF;
+            --rainbow-6: #9E5EFF;
+            --rainbow-7: #FF5EE8;
+            --dark-bg: #1A1A2E;
+            --light-text: #F1F1F1;
+            --shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        
+        /* Base Styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--dark-bg);
+            color: var(--light-text);
+            min-height: 100vh;
+            padding: 2rem;
+            background-image: 
+                radial-gradient(circle at 10% 20%, var(--rainbow-7) 0%, transparent 20%),
+                radial-gradient(circle at 90% 30%, var(--rainbow-5) 0%, transparent 25%),
+                radial-gradient(circle at 50% 80%, var(--rainbow-3) 0%, transparent 30%);
+        }
+        
+        /* Layout */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            backdrop-filter: blur(10px);
+            background: rgba(26, 26, 46, 0.7);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+            padding: 2rem;
+            border-radius: 15px;
+            background: linear-gradient(45deg, var(--rainbow-1), var(--rainbow-3), var(--rainbow-5), var(--rainbow-7));
+            background-size: 300% 300%;
+            animation: gradientBG 8s ease infinite;
+            box-shadow: var(--shadow);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+        
+        /* Controls */
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        
+        select, button {
+            padding: 1rem 1.5rem;
+            font-size: 1rem;
+            border-radius: 50px;
+            border: none;
+            background: rgba(255,255,255,0.9);
+            color: #333;
+            min-width: 300px;
+            box-shadow: var(--shadow);
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 1.5rem center;
+            background-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        button {
+            background: linear-gradient(45deg, var(--rainbow-4), var(--rainbow-5));
+            color: #111;
+            font-weight: 600;
+            min-width: auto;
+            background-image: none;
+        }
+        
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 25px rgba(0,0,0,0.3);
+        }
+        
+        /* Results */
+        .results-container {
+            max-height: 70vh;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+        
+        .result-item {
+            margin-bottom: 2rem;
+            padding: 2rem;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.1);
+            box-shadow: var(--shadow);
+            transition: all 0.5s ease;
+            border: 1px solid rgba(255,255,255,0.1);
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: var(--light-text);
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: var(--rainbow-5);
+            animation: spin 1s ease-in-out infinite;
+            margin: 0 auto;
+        }
+        
+        /* Animations */
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Custom scrollbar */
+        .results-container::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .results-container::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+        }
+        
+        .results-container::-webkit-scrollbar-thumb {
+            background: var(--rainbow-5);
+            border-radius: 10px;
+        }
+        
+        .results-container::-webkit-scrollbar-thumb:hover {
+            background: var(--rainbow-6);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🌈 Infinite API Fetcher</h1>
+            <p>Content loads automatically until you scroll</p>
+        </header>
+        
+        <div class="controls">
+            <select id="api-selector">
+                <option value="joke">Random Jokes</option>
+                <option value="users">Random Users</option>
+                <option value="quotes">Inspirational Quotes</option>
+            </select>
+            <button id="fetch-btn">Start Fetching</button>
+        </div>
+        
+        <div class="results-container" id="results-container">
+            <!-- Results will be added here -->
+        </div>
+        
+        <div class="loading" id="loading-indicator" style="display: none;">
+            <div class="spinner"></div>
+            <p>Fetching more content...</p>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const fetchBtn = document.getElementById('fetch-btn');
+        const apiSelector = document.getElementById('api-selector');
+        const resultsContainer = document.getElementById('results-container');
+        const loadingIndicator = document.getElementById('loading-indicator');
+        
+        // State variables
+        let isFetching = false;
+        let autoFetchEnabled = false;
+        let currentApiType = 'joke';
+        
+        // API Configuration
+        const API_CONFIG = {
+            joke: {
+                url: 'https://official-joke-api.appspot.com/random_joke',
+                display: displayJoke
+            },
+            users: {
+                url: 'https://randomuser.me/api/',
+                processData: data => data.results[0],
+                display: displayUser
+            },
+            quotes: {
+                url: 'https://api.quotable.io/random',
+                display: displayQuote
+            }
+        };
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', initApp);
+        
+        function initApp() {
+            fetchBtn.addEventListener('click', toggleAutoFetch);
+            apiSelector.addEventListener('change', changeApiType);
+            
+            // Set up scroll detection
+            resultsContainer.addEventListener('scroll', handleScroll);
+        }
+        
+        function toggleAutoFetch() {
+            autoFetchEnabled = !autoFetchEnabled;
+            
+            if (autoFetchEnabled) {
+                fetchBtn.textContent = 'Stop Fetching';
+                startAutoFetch();
+            } else {
+                fetchBtn.textContent = 'Start Fetching';
+            }
+        }
+        
+        function changeApiType() {
+            currentApiType = apiSelector.value;
+            resultsContainer.innerHTML = '';
+            
+            if (autoFetchEnabled) {
+                startAutoFetch();
+            }
+        }
+        
+        async function startAutoFetch() {
+            if (!autoFetchEnabled || isFetching) return;
+            
+            // Show loading indicator
+            loadingIndicator.style.display = 'block';
+            
+            // Initial fetch
+            await fetchData();
+            
+            // Continue fetching until scroll
+            while (autoFetchEnabled && resultsContainer.scrollTop === 0) {
+                await new Promise(resolve => setTimeout(resolve, 1500)); // Delay between fetches
+                if (resultsContainer.scrollTop === 0) {
+                    await fetchData();
+                }
+            }
+            
+            loadingIndicator.style.display = 'none';
+        }
+        
+        async function fetchData() {
+            if (isFetching) return;
+            isFetching = true;
+            
+            const apiConfig = API_CONFIG[currentApiType];
+            
+            try {
+                const response = await fetch(apiConfig.url);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                const processedData = apiConfig.processData 
+                    ? apiConfig.processData(data) 
+                    : data;
+                
+                apiConfig.display(processedData);
+            } catch (error) {
+                console.error('API Error:', error);
+            } finally {
+                isFetching = false;
+            }
+        }
+        
+        function handleScroll() {
+            // If user scrolls down, stop auto-fetching
+            if (resultsContainer.scrollTop > 0 && autoFetchEnabled) {
+                autoFetchEnabled = false;
+                fetchBtn.textContent = 'Start Fetching';
+                loadingIndicator.style.display = 'none';
+            }
+            
+            // If scrolled back to top, restart auto-fetching if it was enabled
+            if (resultsContainer.scrollTop === 0 && fetchBtn.textContent === 'Stop Fetching') {
+                startAutoFetch();
+            }
+        }
+        
+        // Display Functions
+        function displayJoke(joke) {
+            const jokeElement = document.createElement('div');
+            jokeElement.className = 'result-item';
+            jokeElement.innerHTML = `
+                <div style="background: linear-gradient(135deg, rgba(255,94,94,0.2), rgba(255,223,94,0.2)); padding: 1.5rem; border-radius: 15px;">
+                    <p style="font-size: 1.2rem; margin-bottom: 1rem;">${joke.setup}</p>
+                    <p style="font-size: 1.1rem; color: var(--rainbow-3); font-style: italic;">${joke.punchline}</p>
+                    <p style="font-size: 0.8rem; color: var(--rainbow-5); margin-top: 1rem;">Joke ID: ${joke.id}</p>
+                </div>
+            `;
+            resultsContainer.prepend(jokeElement);
+        }
+        
+        function displayUser(user) {
+            const userElement = document.createElement('div');
+            userElement.className = 'result-item';
+            userElement.innerHTML = `
+                <div style="display: flex; gap: 1.5rem; align-items: center;">
+                    <img src="${user.picture.large}" alt="${user.name.first}" style="width: 80px; height: 80px; border-radius: 50%; border: 3px solid var(--rainbow-6);">
+                    <div>
+                        <h3 style="color: var(--rainbow-6); margin-bottom: 0.5rem;">${user.name.first} ${user.name.last}</h3>
+                        <p style="color: var(--rainbow-5);">${user.email}</p>
+                        <p style="color: var(--rainbow-3); font-size: 0.9rem;">${user.location.city}, ${user.location.country}</p>
+                    </div>
+                </div>
+            `;
+            resultsContainer.prepend(userElement);
+        }
+        
+        function displayQuote(quote) {
+            const quoteElement = document.createElement('div');
+            quoteElement.className = 'result-item';
+            quoteElement.innerHTML = `
+                <div style="background: linear-gradient(135deg, rgba(94,255,107,0.1), rgba(94,203,255,0.1)); padding: 1.5rem; border-radius: 15px; border-left: 4px solid var(--rainbow-4);">
+                    <p style="font-size: 1.2rem; font-style: italic; margin-bottom: 1rem;">"${quote.content}"</p>
+                    <p style="text-align: right; color: var(--rainbow-4);">— ${quote.author}</p>
+                </div>
+            `;
+            resultsContainer.prepend(quoteElement);
+        }
+    </script>
+</body>
+</html>
